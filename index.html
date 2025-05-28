@@ -4,32 +4,46 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MC free - by Vahin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
     body {
       background-color: red;
       color: limegreen;
-      font-family: Arial, sans-serif;
+      font-family: 'Press Start 2P', cursive;
       text-align: center;
       padding-top: 50px;
     }
+
     .title {
       font-size: 48px;
       margin-bottom: 50px;
     }
+
     .buttons {
       display: flex;
       justify-content: center;
       gap: 50px;
+      flex-wrap: wrap;
       margin-bottom: 50px;
     }
+
     .button-img {
       width: 150px;
       height: auto;
       cursor: pointer;
+      transition: transform 0.2s ease-in-out;
     }
+
+    .button-img:hover {
+      transform: scale(1.1);
+    }
+
     .text {
-      font-size: 32px;
+      font-size: 16px;
       margin-top: 20px;
+      max-width: 90%;
+      margin-left: auto;
+      margin-right: auto;
     }
   </style>
 </head>
@@ -38,16 +52,19 @@
   <div class="title">Minecraft For Free!</div>
 
   <div class="buttons">
+    <!-- Windows Download -->
     <a href="https://github.com/Mrmayman/quantumlauncher/releases/download/v0.4.1/quantum_launcher_windows_x86_64.zip" target="_blank">
       <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMwAAADACAMAAAB/Pny7AAAAZlBMVEUjdrz////19/sAXrP1+v5YkMgdc7vi7PYjer9Rj8gUcbrc6fQNb7kAbbhXksnu9fpJiMTQ4PBmm812pdJ7qtSTt9udvd691OoAareox+KwzOXF2+06gcGLsthnoNAAW7IAVbAAZbV2ZxA/AAAFBUlEQVR4nO2dbXuiOhCGqYfyEhNAVHwDd/f//8mTSRCQhtak2E5w7k9rr71YbydkJt3SJ3hbEMFvv4E5IRk0hHm8Gbz0VAYsLofTflcmq/6r3smAxbna765pHTDB2R8vZVbx5nCqmm2ZFnUSRCyKokDyn18yYbyWtWi2WSehNTTeyITx5ixvC23R1eIe/DIhLKldVifRlIMXMmF8qXZlkQRcCP6pBVqZcJVDLZqyZv+OR7lHPaKBTibMc7i95Y1R1BET4mEHVDKrXDeM5iotOBeM2XtgkGktdmWaBMJqSSGSCdWKghEkVQ3jmxa/JqO22mp3zYpErin++WaLVibM15fTflu+y76XjHq3bzJ5o7o3Y8/Q+BEZud3e/rhOH2p8CGVgSZ2hfbMi7mSerDKzTLhS3btqYI+KBOy1PPVNRk4g+XoDh72sDo5yBhHdjcH8kYF2IY+scEwq6kDutB+atw8yqulBu5ALSg61BgsvZOCmgAFENj158Gb8izkKp0zYWmz7AeSRN4dORm+zlhYtaGSgGNIiS2tpEbgNIChkYhij1G3xvSkKg0x2lOduMcNgjkHmnc90fZJxhWQsIBlXSMYCknHlJWTYTNdHIbOoypCMAZJxhWQsIBlXnt1nMHx7dlmVIRkDKGTonjGwKBkUy4wqY4Aq48pLVIa2ZgMoKkMyBmiZuUKVsYBkXKF7xoJFyaBYZvS/AAZIxhWSsYBkXCEZC1DIUJ8xQDKu0DKzgGRcIRkLSMYVkrEAhQz2PhOZmJIRM/1bg29oFAK+wFo445wLeOIAHrRrEe1LcY96jG0MH/8twf5OyTB4UIbdc/cxjL9mckqSoJOJr0XakqWZouy4bjU7RSPZA5XmpDkrDucDcLmxGfBmlDnth1T3DC991pceXPz+8pt1d808D6d5mxscv6lhJkgGKySDlaXK5B/5ZF99ws76bQYy17oYkfYYet711vVU52t7H7Ctut9u8OmnMQ9mmXdhHH4GMwGf5m4S6SaATSEHgufy79lTc9bLsIkPaDaefgQYyPh/niEZR0jGAhQysx2bMcgsqjKLkqFlZoBkXCEZC0jGFZKxAIUM9RkDJOMKLTMLSMYVkrFgWTIpybjxEjLz/1ADVcaOl/jZGZIxQDKu/OAGQDJW0DKzgGRc8fVnNI28RGVIxgDJuEIyFpCMK9RnLCAZV2iZWUAyrpCMBSTjCslYgEJmUX1GTDzfZwsGmarM6hryt+2CwD6CQeYWC6ZjSQP9FKnL9VHI9FIqjfFapgUktnFbKVQyfZ1U+jsEpwdt/PtD10co00m1WY06Wo/xr2IOUct0dVpvVOoyxBXDE9LT6bLoZUZS+6aEwHvIYPZYpkUFz6r43Do66tz4oHvfvsncSR2qHZSJCa6Xnq8yHZC/ud+mCZNlOvou0xLGl1NTbnuZuea935AZEZe3nNSnBWv/nEy4PkBs+7dyU9HItEoq0LYLF7ZMtEUmc1OKIYFbh1dDMv08Tr8j00ut1cynsqyZThX3VuamJBsUDOfbDDLGBcRzOzlhkLkhF1+snCA4XbZdFlgqYZJpCdWBQ7aomrXT0aN1QijTo9ruVUXDiy8PG9hlNLCbSye59KIIZthpKw9kbuSy6zbQnyZ7rkcyGrmZw/kdnKLx8d07GU2Yyy0CnFIoFG+3ck9lWuAApeeIBPbyP17LKEKYIw5w0k38l2mB7jR46bfMCJLByv917LI22hS+vgAAAABJRU5ErkJggg==" alt="Windows Logo" class="button-img"/>
     </a>
+
+    <!-- Android Download -->
     <a href="https://github.com/vahinT/mcfree/releases/download/apk/MC1.21.61.apk" target="_blank">
-      <img src=https://www.google.com/imgres?q=android%20logo&imgurl=https%3A%2F%2Fbanner2.cleanpng.com%2F20180714%2Fkeu%2Faav31ay9t.webp&imgrefurl=https%3A%2F%2Fwww.cleanpng.com%2Fpng-android-logo-outline-motifs-5358924%2F8.html&docid=TUvYB72rcatYTM&tbnid=qSHkAX9H7B3feM&vet=12ahUKEwjK0PDVgsSNAxViklYBHXm9GEoQM3oECBcQAA..i&w=900&h=660&hcb=2&ved=2ahUKEwjK0PDVgsSNAxViklYBHXm9GEoQM3oECBcQAA" alt="Android Logo" class="button-img"/>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Android_robot.svg" alt="Android Logo" class="button-img"/>
     </a>
   </div>
 
-  <div class="text">Made by Vahin. contact vahinbox@gmail.com for no response.(i will remove this page if asked to do so.)</div>
-  <div class="text">go to 'https://github.com/Mrmayman/quantumlauncher/releases/' for more versions.</div>
+  <div class="text">Made by Vahin. Contact: <a href="mailto:vahinbox@gmail.com" style="color: limegreen;">vahinbox@gmail.com</a> (no promises on replies tho 😅)</div>
+  <div class="text">Want more versions? Head to <a href="https://github.com/Mrmayman/quantumlauncher/releases/" target="_blank" style="color: limegreen;">MrMayman's GitHub</a></div>
 
 </body>
 </html>
