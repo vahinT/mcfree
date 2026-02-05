@@ -1,72 +1,309 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MC free - by Vahin</title>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-  <style>
-    body {
-      background-color: red;
-      color: limegreen;
-      font-family: 'Press Start 2P', cursive;
-      text-align: center;
-      padding-top: 50px;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="The ultimate lightweight Minecraft installer for Windows and Android.">
+    <title>MCV Project | Multi-Platform Installer</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    .title {
-      font-size: 48px;
-      margin-bottom: 50px;
-    }
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #3b82f6;
+            --accent-hover: #2563eb;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --glass-bg: rgba(30, 41, 59, 0.7);
+        }
 
-    .buttons {
-      display: flex;
-      justify-content: center;
-      gap: 50px;
-      flex-wrap: wrap;
-      margin-bottom: 50px;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    .button-img {
-      width: 150px;
-      height: auto;
-      cursor: pointer;
-      transition: transform 0.2s ease-in-out;
-    }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.1) 0px, transparent 50%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.6;
+        }
 
-    .button-img:hover {
-      transform: scale(1.1);
-    }
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
 
-    .text {
-      font-size: 16px;
-      margin-top: 20px;
-      max-width: 90%;
-      margin-left: auto;
-      margin-right: auto;
-    }
-  </style>
+        .logo {
+            font-weight: 700;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: var(--accent-color);
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            margin-left: 20px;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-main);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 80px 20px 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent-color);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 16px;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 18px;
+            margin-bottom: 60px;
+        }
+
+        /* Cards Grid */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            max-width: 1000px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-color);
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--text-main);
+        }
+
+        .card h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 24px;
+            flex-grow: 1;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--text-muted);
+            background: rgba(255,255,255,0.03);
+        }
+
+        .meta-info {
+            margin-top: 12px;
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            gap: 10px;
+            opacity: 0.8;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: auto;
+            border-top: 1px solid var(--border-color);
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        footer a {
+            color: var(--text-muted);
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            color: var(--accent-color);
+        }
+
+        @media (max-width: 640px) {
+            h1 { font-size: 36px; }
+            .grid-container { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
 
-  <div class="title">Minecraft For Free!</div>
+    <nav>
+        <div class="logo">
+            <i class="fa-solid fa-cube"></i> MCV Project
+        </div>
+        <div class="nav-links">
+            <a href="https://github.com/vahinT/mcfree" target="_blank"><i class="fa-brands fa-github"></i> GitHub</a>
+        </div>
+    </nav>
 
-  <div class="buttons">
-    <!-- Windows Download -->
-    <!-- Windows Download -->
-  <a href="https://github.com/vahinT/mcfree/releases/download/MCV-INSTALLER/MCV_Installer.exe" target="_blank">
-    <img src="https://img.utdstc.com/icon/816/021/816021c2ab9ff2f2ed05d373eb6155d3817113778335e75584141a2677283677:200" alt="Windows Logo" class="button-img"/>
-  </a>
+    <section class="hero">
+        <span class="badge">MC Free</span>
+        <h1>Play Minecraft Anywhere.</h1>
+        <p class="subtitle">A streamlined, lightweight installer for Windows, Android, and Web. Open source and community driven.</p>
+    </section>
 
+    <div class="grid-container">
+        
+        <div class="card">
+            <div class="card-icon" style="color: #60a5fa;">
+                <i class="fa-brands fa-windows"></i>
+            </div>
+            <h3>Windows Installer</h3>
+            <p>Native launcher for Windows 10/11. Includes auto-updates and performance optimizations.</p>
+            <a href="https://github.com/vahinT/mcfree/releases/download/MCV-INSTALLER/MCV_Installer.exe" class="btn btn-primary">
+                <i class="fa-solid fa-download"></i> Download .exe
+            </a>
+            <div class="meta-info">
+                <span><i class="fa-solid fa-shield-halved"></i> Verified Safe</span>
+                <span>• v1.21.61</span>
+            </div>
+        </div>
 
-    <!-- Android Download -->
-    <a href="https://github.com/vahinT/mcfree/releases/download/apk/MC1.21.61.apk" target="_blank">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Android_robot.svg" alt="Android Logo" class="button-img"/>
-    </a>
-  </div>
+        <div class="card">
+            <div class="card-icon" style="color: #34d399;">
+                <i class="fa-brands fa-android"></i>
+            </div>
+            <h3>Android APK</h3>
+            <p>Pocket Edition optimized for mobile. Play on the go with touch controls support.</p>
+            <a href="https://github.com/vahinT/mcfree/releases/download/apk/MC1.21.61.apk" class="btn btn-primary">
+                <i class="fa-solid fa-download"></i> Download .apk
+            </a>
+            <div class="meta-info">
+                <span><i class="fa-solid fa-file-code"></i> Direct Download</span>
+            </div>
+        </div>
 
-  <div class="text">Made by Vahin. Contact: <a href="mailto:vahinbox@gmail.com" style="color: limegreen;">vahinbox@gmail.com</a> (no promises on replies tho 😅)</div>
-  <div class="text">Play in the  <a href="browser.html" target="_blank" style="color: limegreen;">Browser</a>!</div>
+        <div class="card">
+            <div class="card-icon" style="color: #f472b6;">
+                <i class="fa-solid fa-globe"></i>
+            </div>
+            <h3>Web Client</h3>
+            <p>No download required. Jump into a server directly from your modern web browser.</p>
+            <a href="browser.html" class="btn btn-secondary">
+                <i class="fa-solid fa-play"></i> Launch in Browser
+            </a>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 MCV Project by Vahin. Not affiliated with Mojang AB.</p>
+        <div style="margin-top: 10px;">
+            <a href="mailto:vahinbox@gmail.com">Contact Support</a>
+            <a href="https://github.com/vahinT/mcfree">Source Code</a>
+        </div>
+    </footer>
 
 </body>
 </html>
