@@ -46,10 +46,8 @@ class LauncherWorker(QThread):
     def log(self, message):
         self.log_signal.emit(message)
 
-    def update_progress(self, current, total, *args):
-        if total > 0:
-            percentage = int((current / total) * 100)
-            self.progress_signal.emit(percentage)
+    def update_progress(self, value):
+        self.progress_signal.emit(int(value))
 
     def download_with_callback(self, url, path, description):
         self.log(f"⬇️ {description}...")
@@ -80,9 +78,10 @@ class LauncherWorker(QThread):
 
             # 1. Resolve Base Version
             if base_version_id == "latest":
-                self.log("🔍 Checking for latest version...")
                 base_version_id = minecraft_launcher_lib.utils.get_latest_version()["release"]
-                self.log(f"🔥 Latest version is {base_version_id}")
+            elif base_version_id == "snapshot":
+                base_version_id = minecraft_launcher_lib.utils.get_latest_version()["snapshot"]
+                self.log(f"📸 Latest snapshot is {base_version_id}")
 
             # 2. Check Java
             self.log("☕ Checking Java Runtime...")
@@ -93,10 +92,10 @@ class LauncherWorker(QThread):
                     break
             
             if not java_path:
-                self.log("⚠️ Java not found. Downloading Portable Java 21...")
-                zip_path = os.path.join(MC_DIR, "java21.zip")
-                # Using Java 21 (Good for 1.20.5+). Older MC versions might need Java 8 or 17.
-                java_url = "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4%2B7/OpenJDK21U-jdk_x64_windows_hotspot_21.0.4_7.zip"
+                self.log("⚠️ Java not found. Downloading Portable Java 25...")
+                zip_path = os.path.join(MC_DIR, "java25.zip")
+                # Java 25 required for Minecraft 26.x.x (class file version 69.0)
+                java_url = "https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.3%2B9/OpenJDK25U-jdk_x64_windows_hotspot_25.0.3_9.zip"
                 self.download_with_callback(java_url, zip_path, "Java Runtime")
                 
                 self.log("📦 Extracting Java...")
@@ -120,9 +119,10 @@ class LauncherWorker(QThread):
                 self.log(f"📥 Installing Vanilla {base_version_id} (Base)...")
                 minecraft_launcher_lib.install.install_minecraft_version(
                     base_version_id, MC_DIR,
-                    callback={"setStatus": lambda x: None, "setProgress": self.update_progress}
+                    callback={"setStatus": lambda x: None, "setProgress": self.update_progress},
+                    
                 )
-
+                
             # 4. Mod Loader Logic
             launch_id = base_version_id # Default to vanilla
 
@@ -288,7 +288,22 @@ class LauncherWorker(QThread):
             cmd = minecraft_launcher_lib.command.get_minecraft_command(launch_id, MC_DIR, options)
             
             self.log("🟢 GO! Game Process Started.")
-            subprocess.Popen(cmd)
+            process = subprocess.Popen(
+                cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
+                encoding='utf-8',
+                errors='replace'
+            )
+            for line in process.stdout:
+                line = line.strip()
+                if line:
+                    self.log(f"[MC] {line}")
+            process.wait()
+            if process.returncode != 0:
+                self.error_signal.emit(f"Game exited with code {process.returncode}. Check logs above.")
+                return
             self.finished_signal.emit()
 
         except Exception as e:
